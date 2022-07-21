@@ -1,0 +1,27 @@
+DATA_CONFIG:
+    _BASE_CONFIG_: ./configs/dataset_configs/nuscenes.yaml
+    NUM_WORKERS: 4
+
+MODEL:
+    NAME: 'SimpleNet'
+
+SIMPLE_LOSS:
+    WEIGHT: 1.0
+
+OPTIMIZATION:
+
+    BATCH_SIZE_PER_GPU: 8
+    TEST_BATCH_SIZE_PER_GPU: 18
+    NUM_EPOCHS: 30
+
+    OPTIMIZER: adam
+    LR: 0.001
+    WEIGHT_DECAY: 0.0000001
+    GRAD_NORM_CLIP: 5.0
+
+    SCHEDULER: 'MultiStepLR'
+    SCHEDULER_MILESTONES: [10, 20, 30]
+    LR_DECAY: 0.1
+    LR_CLIP: 0.00001
+
+    CHECKPOINT: ~

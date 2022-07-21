@@ -1,0 +1,27 @@
+DATASET: 'Nuscenes'
+
+DATASET_FOLDER: '/data0/dataset/nuscenes/'
+VERSION: 'v1.0-trainval' # 'v1.0-trainval', 'v1.0-mini'
+EVAL_SET: 'val' # ['train', 'val', 'test', 'mini_train', 'mini_val']
+
+ALL_LAYERS: ['polygon', 'line', 'node', 'drivable_area', 'road_segment', 'road_block', 'lane', 'ped_crossing', 'walkway', 'stop_line', 'carpark_area', 'lane_connector', 'road_divider', 'lane_divider', 'traffic_light']
+MAP: ['boston-seaport', 'singapore-hollandvillage', 'singapore-onenorth', 'singapore-queenstown']
+CAMS: ['CAM_FRONT_LEFT', 'CAM_FRONT', 'CAM_FRONT_RIGHT', 'CAM_BACK_LEFT', 'CAM_BACK', 'CAM_BACK_RIGHT']
+
+XBOUND: [ -30.0, 30.0, 0.15 ]
+YBOUND: [ -15.0, 15.0, 0.15 ]
+ZBOUND: [ -10.0, 10.0, 20.0 ]
+DBOUND: [ 4.0, 45.0, 1.0 ]
+
+IMAGE_SIZE_ORIGIN: [900, 1600]
+IMAGE_SIZE: [ 128, 352 ]
+
+NUM_CLASSES: 3
+THICKNESS: 5
+CD_threshold: 5
+CLASS2LABEL:
+    road_divider: 0
+    lane_divider: 0
+    ped_crossing: 1
+    contours: 2
+    others: -1
