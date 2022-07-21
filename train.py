@@ -48,8 +48,7 @@ def train(cfg, logger, writer):
         if cfg.OPTIMIZATION.OPTIMIZER != 'adam_onecycle':
             lr_scheduler.step()
         # save trained model
-        trained_epoch = epoch + 1
-        if trained_epoch % 1 == 0 and cfg.LOCAL_RANK == 0:
+        if epoch % 1 == 0 and cfg.LOCAL_RANK == 0:
 
             ckpt_list = glob.glob(str(cfg.CKPT_DIR / 'checkpoint_epoch_*.pth'))
             ckpt_list.sort(key=os.path.getmtime)
@@ -58,9 +57,9 @@ def train(cfg, logger, writer):
                 for cur_file_idx in range(0, len(ckpt_list) - 5 + 1):
                     os.remove(ckpt_list[cur_file_idx])
 
-            ckpt_name = cfg.CKPT_DIR / ('checkpoint_epoch_%d' % trained_epoch)
+            ckpt_name = cfg.CKPT_DIR / ('checkpoint_epoch_%d' % epoch)
             save_checkpoint(
-                checkpoint_state(model, optimizer, trained_epoch, accumulated_iter), filename=ckpt_name,
+                checkpoint_state(model, optimizer, epoch, accumulated_iter), filename=ckpt_name,
             )
 
 if __name__ == '__main__':

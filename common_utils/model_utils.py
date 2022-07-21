@@ -47,16 +47,16 @@ def load_checkpoint(model, optimizer = None, logger = None, to_cpu = False):
 
     # 加载checkpoint
     if cfg.OPTIMIZATION.CHECKPOINT is not None:
-        it, start_epoch = model.load_params_with_optimizer(model, cfg.OPTIMIZATION.CHECKPOINT, to_cpu=to_cpu, optimizer=optimizer, logger=logger)
-        last_epoch = start_epoch + 1
+        it, last_epoch = model.load_params_with_optimizer(model, cfg.OPTIMIZATION.CHECKPOINT, to_cpu=to_cpu, optimizer=optimizer, logger=logger)
+        start_epoch = last_epoch + 1
     else:
         ckpt_list = glob.glob(str(cfg.CKPT_DIR / '*checkpoint_epoch_*.pth'))
         if len(ckpt_list) > 0:
             ckpt_list.sort(key=os.path.getmtime)
-            it, start_epoch = load_params_with_optimizer(model,
+            it, last_epoch = load_params_with_optimizer(model,
                 ckpt_list[-1], to_cpu=to_cpu, optimizer=optimizer, logger=logger
             )
-            last_epoch = start_epoch + 1
+            start_epoch = last_epoch + 1
 
     if start_epoch == cfg.OPTIMIZATION.NUM_EPOCHS and logger is not None:
         logger.info("No more epoch needs to be trained!!!")
