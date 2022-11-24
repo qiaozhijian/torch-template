@@ -8,5 +8,7 @@ class SimpleLoss(torch.nn.Module):
         self.loss_fn = torch.nn.BCEWithLogitsLoss()
 
     def forward(self, ypred, ytgt):
-        loss = 0
+
+        loss = self.loss_fn(ypred, ytgt)
+
         return loss

@@ -14,8 +14,22 @@ class SimpleDataset(Dataset):
 
     def get_samples(self):
 
-        return [1,2,3]
+        samples = []
+        for i in range(100):
+            data = np.random.rand(3, 512, 512)
+            # one-hot encoding
+            label = np.zeros(10)
+            label[i % 10] = 1
+            samples.append((data, label))
+
+        return samples
 
     def __getitem__(self, idx):
 
-        return idx
+        batch_dict = {
+            'idx': idx,
+            'data': self.samples[idx][0].astype(np.float32),
+            'label': self.samples[idx][1].astype(np.float32),
+        }
+
+        return batch_dict

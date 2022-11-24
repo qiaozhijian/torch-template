@@ -9,12 +9,11 @@ from tensorboardX import SummaryWriter
 def load_config(args, evaluate = False):
     cfg_from_yaml_file(args.cfg_file, cfg)
     cfg.TAG = Path(args.cfg_file).stem
-    cfg.EXP_GROUP_PATH = '/'.join(args.cfg_file.split('/')[1:-1])  # remove 'cfgs' and 'xxxx.yaml'
     cfg.PRETRAIN_MODEL = args.pretrained_model
 
     common_utils.set_random_seed(666)
 
-    output_dir = cfg.ROOT_DIR / 'outputs' / cfg.EXP_GROUP_PATH / cfg.TAG / args.extra_tag
+    output_dir = cfg.ROOT_DIR / 'outputs' / cfg.TAG / args.extra_tag
     output_dir.mkdir(parents=True, exist_ok=True)
 
     cfg.CKPT_DIR = output_dir / 'ckpt'
@@ -37,12 +36,7 @@ def load_config(args, evaluate = False):
 
     # 本地调试，多线程置为1
     if 'Lenovo' in socket.gethostname():
-        cfg.OPTIMIZATION.BATCH_SIZE_PER_GPU = 1
-        cfg.OPTIMIZATION.TEST_BATCH_SIZE_PER_GPU = 1
-        cfg.DATA_CONFIG.NUM_WORKERS = 0
-        cfg.DATA_CONFIG.DATASET_FOLDER = "/media/qzj/Extreme SSD/datasets/nuscenes"
-        cfg.DATA_CONFIG.VERSION = 'v1.0-mini'
-        cfg.DATA_CONFIG.EVAL_SET = 'mini_val'
+        print('local debug, you can set num_workers to 0')
 
     if not evaluate:
         writer_dir = output_dir / 'writer'

@@ -11,17 +11,18 @@ def train_one_epoch(epoch, model, opt, train_loader, accumulated_iter,
         pbar = tqdm.tqdm(total=len(train_loader), leave=False, desc='train', dynamic_ncols=True)
 
     model.train()
-    for bi, batch in enumerate(train_loader):
+    for bi, batch_dict in enumerate(train_loader):
         # get_semantic_map：非语义类，divider，ped_crossing，boundary
         t0 = time()
         opt.zero_grad()
         accumulated_iter += 1
 
-        batch = batch2cuda(batch)
-        pred = model(batch)
+        batch_dict = batch2cuda(batch_dict)
+        result_dict = model(batch_dict)
 
-        loss = loss_fn(pred, 0)
-        # loss.backward()
+        pred = result_dict['pred']
+        loss = loss_fn(pred, batch_dict['label'])
+        loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.OPTIMIZATION.GRAD_NORM_CLIP)
 
         opt.step()
@@ -44,5 +45,14 @@ def train_one_epoch(epoch, model, opt, train_loader, accumulated_iter,
     return accumulated_iter
 
 
-def batch2cuda(batch):
-    return batch
+def batch2cuda(batch_dict):
+
+    for k, v in batch_dict.items():
+        if isinstance(v, torch.Tensor):
+            batch_dict[k] = v.cuda(non_blocking=True)
+        elif isinstance(v, np.ndarray):
+            batch_dict[k] = torch.from_numpy(v).cuda(non_blocking=True)
+        else:
+            batch_dict[k] = v
+
+    return batch_dict

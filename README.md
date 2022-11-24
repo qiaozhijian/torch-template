@@ -4,7 +4,9 @@ pytorch训练神经网络的模板代码
 
 运行代码：
 ```
-#注意，运行第二次时，因为会自动加载第一次的checkpoint，所以会瞬间训练完。
+#注意，运行第二次时，因为会自动加载第一次的checkpoint，所以会瞬间训练完。如果想再次训练，删除output文件夹即可
+pip install -r requirements.txt
+# 目前只支持单卡训练
 sh scripts/train_remote.sh 
 ```
 
